@@ -1,0 +1,1 @@
+go to: http://www.shaunpersad.com/blog/?p=25  for basic examples
