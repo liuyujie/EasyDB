@@ -8,13 +8,15 @@ class EasyDB {
 	private $dbname;
 	private $mysql;
 	private $sql;
+	public $pdo;
 	
-	function EasyDB($config) {
+	function EasyDB($config, $pdo = false) {
 		
 		$this->host = $config['host'];
 		$this->user = $config['user'];
 		$this->password = $config['password'];
-		$this->dbname = $config['dbname'];		
+		$this->dbname = $config['dbname'];
+		$this->pdo = $pdo;		
 	}
 	
 	function openDB() {
@@ -385,6 +387,15 @@ class EasyDB {
 		$this->closeDB();
 		
 		return $result;					
+	}
+
+	function prepareInsert($tablename, $columns) {
+
+		$column_string = '(' . implode(', ',$columns) . ')';
+		$value_string = '(:' . implode(', :', $columns) . ')';
+		
+		$this->sql = "INSERT INTO $tablename $column_string VALUES $value_string";		
+
 	}
 	
 	function getLastQuery() {
