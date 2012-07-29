@@ -72,7 +72,7 @@ class EasyDB {
 			
 			foreach($columns as $column => $type) {
 				
-				$escaped_columns[] = mysql_real_escape_string($column) . ' ' . $type;
+				$escaped_columns[] = '`'.mysql_real_escape_string($column).'`' . ' ' . $type;
 			}
 						
 			$column_string = '(' . implode(', ',$escaped_columns) . ')';
@@ -126,7 +126,7 @@ class EasyDB {
 			
 			foreach($columns as $column) {
 				
-				$escaped_columns[] = mysql_real_escape_string($column);
+				$escaped_columns[] = '`'.mysql_real_escape_string($column).'`';
 			}
 			
 			$column_string = implode(', ',$escaped_columns);
@@ -148,7 +148,7 @@ class EasyDB {
 			
 			foreach($wheres as $column => $value) {
 				
-				$escaped_where[] = '(' . mysql_real_escape_string($column) . ' = "' .mysql_real_escape_string($value) . '")';
+				$escaped_where[] = '(' . '`'.mysql_real_escape_string($column).'`' . ' = "' .mysql_real_escape_string($value) . '")';
 			}
 			$where_string = implode(' AND ', $escaped_where);
 			
@@ -189,7 +189,7 @@ class EasyDB {
 			
 			foreach($columns as $column) {
 				
-				$escaped_columns[] = mysql_real_escape_string($column);
+				$escaped_columns[] = '`'.mysql_real_escape_string($column).'`';
 			}
 			
 			$column_string = implode(', ',$escaped_columns);
@@ -211,7 +211,7 @@ class EasyDB {
 			
 			foreach($wheres as $column => $value) {
 				
-				$escaped_where[] = '(' . mysql_real_escape_string($column) . ' = "' .mysql_real_escape_string($value) . '")';
+				$escaped_where[] = '(' . '`'.mysql_real_escape_string($column).'`' . ' = "' .mysql_real_escape_string($value) . '")';
 			}
 			$where_string = implode(' AND ', $escaped_where);
 			
@@ -253,7 +253,7 @@ class EasyDB {
 		
 		foreach($data as $column => $value) {
 			
-			$columns[] = mysql_real_escape_string($column);
+			$columns[] = '`'.mysql_real_escape_string($column).'`';
 			$values[] = '"' . mysql_real_escape_string($value) . '"';
 		}
 		
@@ -280,7 +280,7 @@ class EasyDB {
 				
 		foreach($data as $column => $value) {
 			
-			$set[] = mysql_real_escape_string($column) .' = "' . mysql_real_escape_string($value) . '"';
+			$set[] = '`'.mysql_real_escape_string($column).'`' .' = "' . mysql_real_escape_string($value) . '"';
 		}
 		
 		$set_string = implode(', ',$set);
@@ -295,7 +295,7 @@ class EasyDB {
 			
 			foreach($wheres as $column => $value) {
 				
-				$escaped_where[] = '(' . mysql_real_escape_string($column) . ' = "' .mysql_real_escape_string($value) . '")';
+				$escaped_where[] = '(' . '`'.mysql_real_escape_string($column).'`' . ' = "' .mysql_real_escape_string($value) . '")';
 			}
 			$where_string = implode(' AND ', $escaped_where);
 			
@@ -337,7 +337,7 @@ class EasyDB {
 			
 			foreach($wheres as $column => $value) {
 				
-				$escaped_where[] = '(' . mysql_real_escape_string($column) . ' = "' .mysql_real_escape_string($value) . '")';
+				$escaped_where[] = '(' . '`'.mysql_real_escape_string($column).'`' . ' = "' .mysql_real_escape_string($value) . '")';
 			}
 			$where_string = implode(' AND ', $escaped_where);
 			
@@ -392,3 +392,4 @@ class EasyDB {
 		return $this->sql;
 	}
 }
+?>
