@@ -19,6 +19,11 @@ class EasyDB {
 		$this->pdo = $pdo;		
 	}
 	
+	function setPDO($pdo) {
+		
+		$this->pdo = $pdo;
+	}
+	
 	function openDB() {
 		
 		$this->mysql = mysql_connect($this->host, $this->user, $this->password);
@@ -391,12 +396,55 @@ class EasyDB {
 
 	function prepareInsert($tablename, $columns) {
 
-		$column_string = '(' . implode(', ',$columns) . ')';
-		$value_string = '(:' . implode(', :', $columns) . ')';
+		$tablename = mysql_real_escape_string($tablename);
 		
-		$this->sql = "INSERT INTO $tablename $column_string VALUES $value_string";		
+		$col = array();
+		
+		foreach($columns as $column) {
+			
+			$col[] = mysql_real_escape_string($column);
+		}
+		
+		$column_string = '(`' . implode('`, `',$col) . '`)';
+		$value_string = '(:' . implode(', :', $col) . ')';
+		$return = "INSERT INTO $tablename $column_string VALUES $value_string";
+		return 	$return;	
 
 	}
+	
+	function prepareUpdate($tablename, $columns, $where_columns) {
+
+		$tablename = mysql_real_escape_string($tablename);
+		
+		$set = array();
+		
+		$set_string = '';
+				
+		foreach($columns as $column) {
+			
+			$set[] = '`'.mysql_real_escape_string($column).'`' .' = :' . mysql_real_escape_string($column);
+		}
+		
+		$set_string = implode(', ',$set);
+		
+		$return = "UPDATE $tablename SET $set_string";
+		
+		/* HANDLE WHERES */
+				
+		if(isset($where_columns)) {
+			
+			$escaped_where = array();
+			
+			foreach($where_columns as $column) {
+				
+				$escaped_where[] = '(' . '`'.mysql_real_escape_string($column).'`' . ' = :' .mysql_real_escape_string($column) . ')';
+			}
+			$where_string = implode(' AND ', $escaped_where);
+			
+			$return .= " WHERE $where_string";
+		}
+		return $return;	
+	}	
 	
 	function getLastQuery() {
 	
